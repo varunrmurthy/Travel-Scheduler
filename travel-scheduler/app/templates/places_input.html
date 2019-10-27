@@ -1,0 +1,85 @@
+
+  <title>Travel Scheduler</title>
+  <style>
+    .inputplace {
+      top: 50%;
+      left: 50%;
+      position:absolute;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      width: 450px;
+       border: 2px #4d90fe;
+       padding-left: 50px;
+       padding-right: 10px;
+       padding-bottom:50px;
+       padding-top:50px;
+       margin-left: 20px;
+
+    }
+    .bg-img {
+      background: url("https://www.ishn.com/ext/resources/900x550/airplane-plane-flight-900.jpg?1553698691") no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+    .center {
+      position: center;
+    }
+    .btn {
+      color: white;
+      padding: 16px 20px;
+      border: none;
+      cursor: pointer;
+      opacity: 0.9;
+      background-color: #4d90fe;
+      border-color: #4d90fe;
+    }
+
+    .btn:hover {
+      opacity: 1;
+    }
+
+  </style>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <html>
+    <body class="bg-img">
+        <div class="inputplace">
+          <div class="form-group row">
+            <form id="place-input">
+              <div>
+              <div> Any places in mind already? </div>
+              <br>
+              <label>Tell us where you'd like to go: <input class="form-control" name="place"> </label>
+              <input type="submit" value="Next" class="btn">
+                <ul class="places list-group list-group-flush">
+                  {% for place in places %}
+                    <li class="list-group-item list-group-item-action"> {{place}} </li>
+                  {% endfor %}
+                </ul>
+
+            </form>
+          </div>
+          <div class="form-group">
+            <input type="button" value="Create My Itinerary!" onclick="location.href='{{url_for('itinerary')}}';" class="btn">
+          </div>
+        </div>
+
+    <body>
+  </html>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    function submit_place(ev) {
+      ev.preventDefault();
+      $.ajax({
+        method: 'POST',
+        url: {{ url_for('submit_place')|tojson }},
+        data: $(this).serialize()
+      });
+      window.location.href = '/places';
+    }
+
+    $('#place-input').on('submit', submit_place);
+
+  </script>

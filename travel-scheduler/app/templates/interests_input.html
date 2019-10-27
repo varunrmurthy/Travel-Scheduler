@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+
+<title>Travel Scheduler</title>
+<style type="text/css">
+    body {
+      background: url("http://dholpur.rajasthan.gov.in/content/dam/doitassets/Dholpur/images/20150104_160022.jpg") no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      position:absolute;
+    }
+    .heading {
+      position: relative;
+      transform: translateX(100%);
+      transform: translateY(70%);
+      font-size:50px;
+      color:#fff;
+      left: 97%;
+      bottom: 50%;
+    }
+    .row {
+      position: relative;
+      transform: translateX(40%);
+      transform: translateY(70%);
+      left:40%;
+      top:50%;
+      /* margin-left: 120px; */
+    }
+    .btn-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 35px;
+      font-size: 24px;
+      line-height: 1.33;
+      background-color: #fff;
+      border-color: #4d90fe;
+      position: relative;
+      transform: translateX(600%);
+    }
+    .btn-circle:hover {
+      background-color: #4d90fe;
+      border-color: #4d90fe;
+    }
+    .btn-circle:hover .fa-arrow-right {
+      color: #fff;
+    }
+    .fa-arrow-right {
+      color: #4d90fe;
+    }
+    input[type=submit] {
+      padding:5px;
+      border:1px solid #4d90fe;
+      border-radius: 5px;
+      background-color: #fff;
+      position: relative;
+      transform: translateX(50%);
+      margin-left: 25px;
+      margin-bottom: 25%;
+      width: 300px;
+      height: 50px;
+      font-size: 25px;
+    }
+    input[type=submit]:hover {
+      color:#4d90fe !important;
+    }
+    </style>
+</head>
+<body>
+
+<h1 class="heading">Interests</h1>
+
+<div class="row">
+  <form class="interest_selection">
+    <input class="btn" name="Art" type="submit" value="Art">
+  </form>
+  <form class="interest_selection">
+    <input class="btn" name="Education" type="submit" value="Education">
+  </form>
+</div>
+<div class="row">
+  <form class="interest_selection">
+    <input class="btn" name="Outdoors" type="submit" value="Outdoors">
+  </form>
+  <form class="interest_selection">
+    <input class="btn" name="Food" type="submit" value="Food">
+  </form>
+</div>
+<div class="row">
+  <form class="interest_selection">
+    <input class="btn" name="Hotels" type="submit" value="Hotels">
+  </form>
+  <form class="interest_selection">
+    <input class="btn" name="Medical" type="submit" value="Medical">
+  </form>
+  <button type="button" class="btn btn-outline-secondary btn-circle" onclick="location.href='{{url_for('places')}}';"><i class="fa fa-arrow-right"></i></button>
+</div>
+<div class="row">
+  <form class="interest_selection">
+    <input class="btn" name="Shopping" type="submit" value="Shopping">
+  </form>
+  <form class="interest_selection">
+    <input class="btn" name="Transportation" type="submit" value="Transportation">
+  </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+
+<script>
+    function addSubmit(ev) { //describes what happens when the Submit button is clicked
+      ev.preventDefault();
+      var request = new XMLHttpRequest();
+      request.addEventListener('load', addShow); //when the request returns info (from the add()), call addShow() to display info
+      request.open('POST', {{ url_for('change')|tojson }}); //opens a POST request to the add() function, with the constructed URL with 'add'
+
+      var formData = new FormData();
+      formData.append('interest', this.elements[0].getAttribute('value'));
+      request.send(formData); //sends the request
+    }
+
+    function addShow() {
+      var data = JSON.parse(this.responseText); //receives the JSON from add() in views.py and parses it for the added result
+      var name = data.result.substring(1);
+      var interest = document.getElementsByName(name)[0]; //sets the appropriate visual text to the received output
+
+      if (data.result.substring(0, 1) === "f") {
+        interest.style.backgroundColor="#fff";
+        interest.style.color="#000";
+      } else {
+        interest.style.backgroundColor="#4d90fe";
+        interest.style.color="#fff";
+      }
+    }
+
+    var list = document.getElementsByClassName('interest_selection');
+    for (var i = 0; i < list.length; i++) {
+      list[i].addEventListener('submit', addSubmit);
+    }
+</script>

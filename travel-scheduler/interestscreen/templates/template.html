@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+
+<title>Page Title</title>
+<style type="text/css">
+    h1 {
+      font-size:50px;
+      color:#6c757d;
+      margin-left: 510px;
+      margin-top: 50px
+    }
+    .row {
+      margin-bottom:50px;
+      margin-left: 120px;
+    }
+    .btn-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 35px;
+      font-size: 24px;
+      line-height: 1.33;
+      background-color: #fff;
+      border-color: #6c757d;
+      margin-left: 150px;
+    }
+    .btn-circle:hover .fa-arrow-right {
+      color: #fff;
+    }
+    .fa-arrow-right {
+      color: #6c757d;
+    }
+    input[type=submit] {
+      padding:5px;
+      border:2px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+      margin-left: 200px;
+      width: 300px;
+      height: 50px;
+      font-size: 25px;
+    }
+    input[type=submit]:hover {
+      color:#fff;
+    }
+    </style>
+</head>
+<body>
+
+<div class="row">
+  <h1>Interests</h1>
+</div>
+
+<div class="row">
+  <form class="interest_selection">
+    <input class="btn btn-outline-secondary" name="Art" type="submit" value="Art">
+  </form>
+  <form class="interest_selection">
+    <input class="btn btn-outline-secondary" name="Education" type="submit" value="Education">
+  </form>
+</div>
+<div class="row">
+  <form class="interest_selection">
+    <input class="btn btn-outline-secondary" name="Outdoors" type="submit" value="Outdoors">
+  </form>
+  <form class="interest_selection">
+    <input class="btn btn-outline-secondary" name="Food" type="submit" value="Food">
+  </form>
+</div>
+<div class="row">
+  <form class="interest_selection">
+    <input class="btn btn-outline-secondary" name="Hotels" type="submit" value="Hotels">
+  </form>
+  <form class="interest_selection">
+    <input class="btn btn-outline-secondary" name="Medical" type="submit" value="Medical">
+  </form>
+  <button type="button" class="btn btn-outline-secondary btn-circle" onclick="location.href='{{url_for('places')}}';"><i class="fa fa-arrow-right"></i></button>
+</div>
+<div class="row">
+  <form class="interest_selection">
+    <input class="btn btn-outline-secondary" name="Shopping" type="submit" value="Shopping">
+  </form>
+  <form class="interest_selection">
+    <input class="btn btn-outline-secondary" name="Transportation" type="submit" value="Transportation">
+  </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script
+</body>
+
+<script>
+    function addSubmit(ev) { //describes what happens when the Submit button is clicked
+      ev.preventDefault();
+      var request = new XMLHttpRequest();
+      request.addEventListener('load', addShow); //when the request returns info (from the add()), call addShow() to display info
+      request.open('POST', {{ url_for('change')|tojson }}); //opens a POST request to the add() function, with the constructed URL with 'add'
+
+      var formData = new FormData();
+      formData.append('interest', this.elements[0].getAttribute('value'));
+      request.send(formData); //sends the request
+    }
+
+    function addShow() {
+      var data = JSON.parse(this.responseText); //receives the JSON from add() in views.py and parses it for the added result
+      var name = data.result.substring(1);
+      var interest = document.getElementsByName(name)[0]; //sets the appropriate visual text to the received output
+
+      if (data.result.substring(0, 1) === "f") {
+        interest.style.backgroundColor="#fff";
+        interest.style.color="#6c757d";
+      } else {
+        interest.style.backgroundColor="#6c757d";
+        interest.style.color="#fff";
+      }
+    }
+
+    var list = document.getElementsByClassName('interest_selection');
+    for (var i = 0; i < list.length; i++) {
+      list[i].addEventListener('submit', addSubmit);
+    }
+</script>

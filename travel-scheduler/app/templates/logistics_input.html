@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<title>Travel Scheduler</title>
+<style type="text/css">
+body,html {
+  background: url("http://www.affordabletravelplan.com/wp-content/uploads/2017/10/Travel-and-Leisure-1.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+
+/* Add styles to the form container */
+.container {
+
+ max-width: 300px;
+ padding: 16px;
+ background-color: white;
+}
+div.form
+{
+    display: block;
+    text-align: center;
+}
+form
+{
+  left: 50%;
+    top: 50%;
+    position: absolute;
+    -webkit-transform: translate3d(-50%, -50%, 0);
+    -moz-transform: translate3d(-50%, -50%, 0);
+    transform: translate3d(-50%, -50%, 0);
+}
+/* Full-width input fields */
+
+/* Set a style for the submit button */
+.btn {
+  background-color: #4d90fe;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.btn:hover {
+  opacity: 1;
+}
+
+</style>
+  <body>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <div class="bg-img">
+      <div class = "form">
+
+      <form id = "logistics-input" class = "container">
+        <div>How long are you staying?</div>
+        <label> <input name="days"> Days </label>
+        <br>
+        <div>How far are you willing to travel from your hotel?</div>
+        <label> <input name="miles"> Miles </label>
+        <br>
+        <input type="submit" value="Next" class = "btn">
+      </div>
+      </form>
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+    function logisticsSubmit(ev) {
+      ev.preventDefault();
+      $.ajax({
+        method: 'POST',
+        url: {{ url_for('submit_logistics')|tojson }},
+        data: $(this).serialize()
+      });
+      window.location.href = '/interests';
+    }
+
+    $('#logistics-input').on('submit', logisticsSubmit);
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>

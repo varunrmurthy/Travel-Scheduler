@@ -1,0 +1,25 @@
+
+  <title> PLACE</title>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    function hello(ev) {
+      ev.preventDefault();
+      $.ajax({
+        method: 'POST',
+        url: {{ url_for('places')|tojson }},
+        data: $(this).serialize()
+      });
+    }
+    $('#asdf').on('submit', hello);
+  </script>
+  <html>
+    <form id="asdf">
+      <input type="text" name="place" id="place">
+      <input type='submit' name="add" id="add">
+    </form>
+    <ul class=places>
+      {% for place in places %}
+        <li> {{place}} </li>
+      {% endfor %}
+    </ul>
+  </html>
