@@ -62,7 +62,7 @@ def getTime(data):
 
 def getMapQuestTime(start, end):
     URL = "https://www.mapquestapi.com/directions/v2/route?"
-    PARAMS = {'from':start.pos, 'to':end.pos, 'key':"MyhhJX525dvRwSUWpKHNOTKDjJaK59WX"}
+    PARAMS = {'from':start.pos, 'to':end.pos, 'key':}
     r = requests.get(url = URL, params = PARAMS)
     data = r.json()
     return data.get('route').get('time')
